@@ -1,5 +1,5 @@
 #ifndef POLYGON_H
-#define RPOLYGON_H
+#define POLYGON_H
 
 #include "polygonBase.h"
 
@@ -62,7 +62,7 @@ class rectangle : public square<T>{
 		rectangle() : square<T>() {};
 
 		// Parametrised constructor
-		rectangle(T p_x, T p_y, T p_W, T p_H ) : square<T>(4, p_x, p_y, 1) {
+		rectangle(T p_x, T p_y, T p_W, T p_H ) : square<T>(p_x, p_y, 1) {
       this->scaleCentre(p_W, p_H, 0);  
     };
 	

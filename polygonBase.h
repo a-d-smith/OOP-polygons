@@ -10,7 +10,7 @@ using namespace std;
 
 namespace polygons{
 
-// Base class for a polygon
+// Abstract base class for a polygon
 // ------------------------------------------------------------------------------------------
 template <class T>
 class polygon{
@@ -18,6 +18,9 @@ class polygon{
 		// All polygons are made up of a list of vertices. Here we the STL vector container to 
 		// hold this list of points  
 		vector<vertex<T>> m_vertices;
+
+    // A bool to indicate if the polygon has been deformed since creation
+    bool m_modified{false};
 	public:
     // Default Constructor
     polygon(){};
@@ -27,7 +30,12 @@ class polygon{
 		polygon(int p_N, T p_x, T p_y, T p_L);
 
     // Parametrised constructor using an initialiser list
-    template <class U> polygon(initializer_list<U> li) : m_vertices(li) {};
+    template <class U> polygon(initializer_list<U> li) : m_vertices(li) {
+      if (li.size() < 3){
+        cerr << "Error: A polygon must have at least 3 vertices" << endl;
+        exit(1);
+      }  
+    };
 
 		// Destructor
 		~polygon(){};
@@ -44,6 +52,9 @@ class polygon{
 		// Function to return a vertex which lies unit distance from the origin in the direction 
 		// of the normal to the surface of the polygon
 		vertex<T> normal();
+
+    // Function to return if the the polygon has been deformed since creation
+    bool modified();
 
 		// Pure virtual function to return the type of polygon
 		virtual string type() = 0;
@@ -150,6 +161,11 @@ template <class T> vertex<T> polygon<T>::normal(){
 	return retVertex;
 }
 
+// Function to return if the the polygon has been deformed since creation
+template <class T> bool polygon<T>::modified(){
+  return m_modified;  
+}
+
 // Function to list the vertices in the polygon
 template <class T> void polygon<T>::listVertices(){
 	cout << "Type : " << this->type() << endl;
@@ -173,6 +189,10 @@ template <class T> void polygon<T>::translate(T p_x, T p_y, T p_z){
 
 // Function to scale the polygon about a point (x, y, z) by scale factors fx, fy and fz
 template <class T> void polygon<T>::scale(T p_x, T p_y, T p_z, T p_fx, T p_fy, T p_fz){
+  if (p_fx != 1 || p_fy != 1 || p_fz != 1){
+    m_modified = true;  
+  }
+
 	for (vertex<T> &vtx : m_vertices){
 		vtx.scale(p_x, p_y, p_z, p_fx, p_fy, p_fz);
 	}
@@ -180,6 +200,10 @@ template <class T> void polygon<T>::scale(T p_x, T p_y, T p_z, T p_fx, T p_fy, T
 
 // Function to scale the polygon about its centre by scale factors fx, fy and fz
 template <class T> void polygon<T>::scaleCentre(T p_fx, T p_fy, T p_fz){
+  if (p_fx != 1 || p_fy != 1 || p_fz != 1){
+    m_modified = true;  
+  }
+
 	vertex<T> cent = this->centre();
 	this->scale(cent.x(), cent.y(), cent.z(), p_fx, p_fy, p_fz);
 }
