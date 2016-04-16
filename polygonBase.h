@@ -62,6 +62,9 @@ class polygon{
 		// Function to list the vertices in the polygon
 		void listVertices();
 
+    // Function to access (read only) the vertices
+    const vertex<T> & operator[](int p_i);
+
 		// --------------------------------------------------------------------------------------
 
 
@@ -172,6 +175,11 @@ template <class T> void polygon<T>::listVertices(){
 	for (vertex<T> &vtx : m_vertices){
 		cout << "   " << vtx << endl;
 	}
+}
+
+// Function to access (read only) the vertices
+template <class T> const vertex<T> & polygon<T>::operator[](int p_i){
+  return m_vertices[p_i];
 }
 
 // ------------------------------------------------------------------------------------------

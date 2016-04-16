@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 #include <iomanip>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -36,12 +38,11 @@ class manager{
     void remove(string p_name);
 
 
-    // Functions to print the data on all of the polygons
-    // --------------------------------------------------------------------------------------
-
     // A function to list all polygons
     void listAll();
 
+    // Function to write a .htm file which displays the polygons.
+    void display(string p_filename);
 };
 
 // Functions to add / remove / get polygons in the library
@@ -87,9 +88,6 @@ template <class T> void manager<T>::remove(string p_name){
   }
 }
 
-// Functions to print the data on all of the polygons
-// --------------------------------------------------------------------------------------
-
 // A function to list all polygons.
 template <class T> void manager<T>::listAll(){
   if (m_library.size() == 0){
@@ -113,6 +111,245 @@ template <class T> void manager<T>::listAll(){
       cout << setw(10) << it->second->modified() << endl;
     }
   }
+}
+
+// Function to write a .htm file which displays the polygons.
+template <class T> void manager<T>::display(string p_filename){
+  if (m_library.size() == 0){
+    cerr << "Error: No polygons exist to visualise!" << endl;
+    exit(1);
+  }
+
+
+  // Open the output file for writing
+  ofstream oFile;
+  oFile.open(p_filename + ".htm");
+  if (!oFile.is_open()){
+    cerr << "Error: Can not open file \" " << p_filename << ".htm" << " \" for writing" << endl;  
+    exit(1);
+  }
+
+  // Start off the HTML file
+  oFile << "<!DOCTYPE HTML>"                                         << endl;
+  oFile << "<head>"                                                  << endl;
+  oFile << "  <title>Polygon Visualisation</title>"                  << endl;
+  oFile << "</head>"                                                 << endl;
+  oFile << "<body>"                                                  << endl;
+  oFile << "  <h1>Polygon Visualisation</h1>"                        << endl; 
+  oFile << "  <canvas id='canv' width='800' height='600'>"           << endl;
+  oFile << "    Sorry your browser doesn't support the HTML5 canvas" << endl;
+  oFile << "  </canvas>"                                             << endl;
+  oFile << "  <script type='text/javascript'>"                       << endl;
+  oFile << "    // Set up the canvas"                                << endl;
+  oFile << "    var c = document.getElementById('canv');"            << endl;
+  oFile << "    var ctx = c.getContext('2d');"                       << endl;
+
+  // The canvas on to which we are drawing has width 800px, height 600px
+  T W = 800;
+  T H = 600;
+
+  // The point (0, 0) is defied to be the top left corner and (W, H) is the bottom right
+  // For isometric projection (assuming 1:1 scale, and coinciding origins for now), 
+  // the conversion from a 3D (x, y, z) coordinate to a 2D (a, b) coordinate is:
+  //
+  //   a = (y + x) * sin(PI/6);
+  //   b = (y - x) * sin(PI/6) + z;
+  //
+  // We need to find the maximum and minimum values of a & b for all vertices to be drawn
+  // when using this 1:1, then we can scale the axes such that we are sure all polygons
+  // in the library will be displayed.
+
+
+  T minA =  9999999999999999;
+  T maxA = -9999999999999999;
+  T minB =  9999999999999999;
+  T maxB = -9999999999999999;
+
+  T minX =  9999999999999999;
+  T maxX = -9999999999999999;
+  T minY =  9999999999999999;
+  T maxY = -9999999999999999;
+  T minZ =  9999999999999999;
+  T maxZ = -9999999999999999;
+
+  // Loop over all of the polygons
+  typename map<string, polygon<T>*>::iterator it;
+  for (it = m_library.begin(); it != m_library.end(); it++){
+    // Loop over all of the vertices
+    for (int i=0; i<it->second->N(); i++){
+      vertex<T> vtx = (*(it->second))[i];
+
+      // Calcualte a & b
+      T a = (vtx.y() + vtx.x()) * sin(PI/6);
+      T b = (vtx.y() - vtx.x()) * sin(PI/6) + vtx.z();
+
+      // Check a
+      minA = min(a, minA);
+      maxA = max(a, maxA);
+
+      // Check b
+      minB = min(b, minB);
+      maxB = max(b, maxB);
+
+      // Check x, y & z
+      minX = min(vtx.x(), minX);
+      maxX = max(vtx.x(), maxX);
+      minY = max(vtx.y(), minY);
+      maxY = max(vtx.y(), maxY);
+      minZ = max(vtx.z(), minZ);
+      maxZ = max(vtx.z(), maxZ);
+    }
+  }
+
+  // We now define a margin size around the canvas
+  T M = 20;
+
+  // Now we can determine the scale factor to ensure everything fits nicely
+  T f = min( (W - 2*M)/(maxA - minA), (H - 2*M)/(maxB - minB));
+
+  // Now we can convert between (x, y, z) to the 2D canvas plane (X, Y) using:
+  // 
+  //   X = M + f * ( (y + x)*sin(PI/6) - minA );
+  //   Y = M + f * ( (y + x)*sin(PI/6) + z - minB );
+
+
+  // Here we want to draw the isometric grid on to which we shall draw our polygons.
+  // We will either draw grid lines every ... 0.1, 1, 10, 100, ... units depending
+  // on the data we have. 
+ 
+  // If all of the polygons are in a single plane then we will have issues trying
+  // to draw the axis normal to the plane in which case we shall set the max and min
+  // values by hand
+
+  if (maxZ - minZ == 0){
+    if (maxY - minY == 0){
+      maxY = maxX;
+      minY = minX;
+    }
+    maxZ = maxY;
+    minZ = minY;
+  }
+
+  if (maxY - minY == 0){
+    if (maxX - minX == 0){
+      maxX = maxZ;
+      minX = minZ;
+    }
+    maxY = maxX;
+    minY = minX;
+  }
+
+  if (maxX - minX == 0){
+    if (maxZ - minZ == 0){
+      maxZ = maxY;
+      minZ = minY;
+    }
+    maxX = maxZ;
+    minX = minZ;
+  }
+
+
+  // We want at least 10 ticks on the display...
+  // For a tick size of 10^m, we want to find m such that the number of ticks,
+  //   T(m) >= 10 && T(m+1) < 10;
+  //
+  // T(m) = floor((maxX - minX)/(10^m)) (on the x-axis)
+
+  // First try mx = 0
+  int mx = 0;
+  bool optimum{false};
+
+  while (!optimum){
+    if (floor((maxX - minX) / (10^mx)) < 10){
+      // T(m) < 10
+      // Need to reduce mx
+      mx--;    
+    }
+    else{
+      // Need to check T(m+1) < 10
+      if (floor((maxX - minX) / (10^(mx+1))) < 10){
+        // This scale is good  
+        optimum = true;
+      }
+      else{
+        // We need to increase mx
+        mx++;
+      }
+    }
+  }
+
+  // Now repeat for the y- & z-axes
+  int my = 0;
+  optimum = false;
+
+  while (!optimum){
+    if (floor((maxY - minY) / (10^my)) < 10){
+      // T(m) < 10
+      // Need to reduce my
+      my--;    
+    }
+    else{
+      // Need to check T(m+1) < 10
+      if (floor((maxY - minY) / (10^(my+1))) < 10){
+        // This scale is good  
+        optimum = true;
+      }
+      else{
+        // We need to increase my
+        my++;
+      }
+    }
+  }
+   
+  int mz = 0;
+  optimum = false;
+
+  while (!optimum){
+    if (floor((maxZ - minZ) / (10^mz)) < 10){
+      // T(m) < 10
+      // Need to reduce mz
+      mz--;    
+    }
+    else{
+      // Need to check T(m+1) < 10
+      if (floor((maxZ - minZ) / (10^(mz+1))) < 10){
+        // This scale is good  
+        optimum = true;
+      }
+      else{
+        // We need to increase mz
+        mz++;
+      }
+    }
+  }
+
+  // Now we have mx, my and mz. We need to choose the minimum
+  int m = min(mx, my);
+  m = min(m, mz);
+
+  oFile << "    ctx.StrokeStyle = '#DDDDDD';"                       << endl;
+  oFile << "    ctx.StrokeStyle = '#DDDDDD';"                       << endl;
+  
+
+  // Loop over all of the polygons
+  for (it = m_library.begin(); it != m_library.end(); it++){
+    // Loop over all of the vertices
+    for (int i=0; i<it->second->N(); i++){
+      vertex<T> vtx = (*(it->second))[i];
+
+      // Calcualte X & Y
+      T X = M + f * ( (vtx.y() + vtx.x()) * sin(PI/6) - minA );
+      T Y = M + f * ( (vtx.y() - vtx.x()) * sin(PI/6) + vtx.z() - minB);
+ 
+    }
+  }
+  
+  // Finish off the HTML file
+  oFile << "  </script>"                                             << endl;
+  oFile << "</body>"                                                 << endl;
+
+  // Close the file
+  oFile.close();
 }
 
 }

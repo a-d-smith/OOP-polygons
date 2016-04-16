@@ -17,10 +17,8 @@ int main(){
   m.add(new isoTriangle<double>(-0.5, -0.5, 0.5), "myTriangle");
   m.add(new pentagon<double>(1, 1, 2), "fat ass");
 
-  m.get("mySquare")->scaleCentre(2, 2, 0);
-  m.get("fat ass")->rotateCentre(0.1);
-
   m.listAll();
+  m.display("testDisplay");
 
   return 0;
 }
