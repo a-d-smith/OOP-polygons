@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "Compiling the project"
+echo "--------------------------------------"
+make
+echo ""
+echo "Running the demonstration"
+echo "--------------------------------------"
+./polygons
+echo "--------------------------------------"
+
