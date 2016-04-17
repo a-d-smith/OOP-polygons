@@ -1,6 +1,7 @@
 #!/bin/bash
 echo "Compiling the project"
 echo "--------------------------------------"
+make clean
 make
 echo ""
 echo "Running the demonstration"

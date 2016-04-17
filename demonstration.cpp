@@ -13,12 +13,21 @@ int main(){
   // Initiate an intance of the manager
   manager<double> m;
 
-  m.add(new square<double>(0.5, 0.5, 1), "mySquare");
-  m.add(new isoTriangle<double>(-0.5, -0.5, 0.5), "myTriangle");
-  m.add(new pentagon<double>(1, 1, 2), "fat ass");
+  m.add(new square<double>(0, 0, 1), "base");
+
+  m.add(new square<double>(0, 0, 1), "side1");
+  m.get("side1")->listVertices();
+
+  m.get("side1")->rotate(0, 0, 0, 1, 0, 0, PI);
+  m.get("side1")->listVertices();
+
+  m.get("side1")->translate(0.5, 0.5, 0);
+  m.get("side1")->listVertices();
 
   m.listAll();
+
   m.display("testDisplay");
+
 
   return 0;
 }

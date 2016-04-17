@@ -152,7 +152,7 @@ template <class T> void manager<T>::display(string p_filename){
   // For isometric projection (assuming 1:1 scale, and coinciding origins for now), 
   // the conversion from a 3D (x, y, z) coordinate to a 2D (a, b) coordinate is:
   //
-  //   a = (y + x) * sin(PI/6);
+  //   a = (y + x) * cos(PI/6);
   //   b = (y - x) * sin(PI/6) + z;
   //
   // We need to find the maximum and minimum values of a & b for all vertices to be drawn
@@ -180,7 +180,7 @@ template <class T> void manager<T>::display(string p_filename){
       vertex<T> vtx = (*(it->second))[i];
 
       // Calcualte a & b
-      T a = (vtx.y() + vtx.x()) * sin(PI/6);
+      T a = (vtx.y() + vtx.x()) * cos(PI/6);
       T b = (vtx.y() - vtx.x()) * sin(PI/6) + vtx.z();
 
       // Check a
@@ -194,9 +194,9 @@ template <class T> void manager<T>::display(string p_filename){
       // Check x, y & z
       minX = min(vtx.x(), minX);
       maxX = max(vtx.x(), maxX);
-      minY = max(vtx.y(), minY);
+      minY = min(vtx.y(), minY);
       maxY = max(vtx.y(), maxY);
-      minZ = max(vtx.z(), minZ);
+      minZ = min(vtx.z(), minZ);
       maxZ = max(vtx.z(), maxZ);
     }
   }
@@ -221,8 +221,9 @@ template <class T> void manager<T>::display(string p_filename){
   // to draw the axis normal to the plane in which case we shall set the max and min
   // values by hand
 
-  if (maxZ - minZ == 0){
-    if (maxY - minY == 0){
+
+  if (abs(maxZ - minZ) == 0){
+    if (abs(maxY - minY) == 0){
       maxY = maxX;
       minY = minX;
     }
@@ -230,8 +231,8 @@ template <class T> void manager<T>::display(string p_filename){
     minZ = minY;
   }
 
-  if (maxY - minY == 0){
-    if (maxX - minX == 0){
+  if (abs(maxY - minY) == 0){
+    if (abs(maxX - minX) == 0){
       maxX = maxZ;
       minX = minZ;
     }
@@ -239,15 +240,14 @@ template <class T> void manager<T>::display(string p_filename){
     minY = minX;
   }
 
-  if (maxX - minX == 0){
-    if (maxZ - minZ == 0){
+  if (abs(maxX - minX) == 0){
+    if (abs(maxZ - minZ) == 0){
       maxZ = maxY;
       minZ = minY;
     }
     maxX = maxZ;
     minX = minZ;
   }
-
 
   // We want at least 10 ticks on the display...
   // For a tick size of 10^m, we want to find m such that the number of ticks,
@@ -260,14 +260,14 @@ template <class T> void manager<T>::display(string p_filename){
   bool optimum{false};
 
   while (!optimum){
-    if (floor((maxX - minX) / (10^mx)) < 10){
+    if (floor((maxX - minX) / pow(10,mx)) < 10){
       // T(m) < 10
       // Need to reduce mx
       mx--;    
     }
     else{
       // Need to check T(m+1) < 10
-      if (floor((maxX - minX) / (10^(mx+1))) < 10){
+      if (floor((maxX - minX) / pow(10, mx+1)) < 10){
         // This scale is good  
         optimum = true;
       }
@@ -283,14 +283,14 @@ template <class T> void manager<T>::display(string p_filename){
   optimum = false;
 
   while (!optimum){
-    if (floor((maxY - minY) / (10^my)) < 10){
+    if (floor((maxY - minY) / pow(10, my)) < 10){
       // T(m) < 10
       // Need to reduce my
       my--;    
     }
     else{
       // Need to check T(m+1) < 10
-      if (floor((maxY - minY) / (10^(my+1))) < 10){
+      if (floor((maxY - minY) / pow(10, my+1)) < 10){
         // This scale is good  
         optimum = true;
       }
@@ -305,14 +305,14 @@ template <class T> void manager<T>::display(string p_filename){
   optimum = false;
 
   while (!optimum){
-    if (floor((maxZ - minZ) / (10^mz)) < 10){
+    if (floor((maxZ - minZ) / pow(10, mz)) < 10){
       // T(m) < 10
       // Need to reduce mz
       mz--;    
     }
     else{
       // Need to check T(m+1) < 10
-      if (floor((maxZ - minZ) / (10^(mz+1))) < 10){
+      if (floor((maxZ - minZ) / pow(10, mz+1)) < 10){
         // This scale is good  
         optimum = true;
       }
@@ -327,20 +327,81 @@ template <class T> void manager<T>::display(string p_filename){
   int m = min(mx, my);
   m = min(m, mz);
 
-  oFile << "    ctx.StrokeStyle = '#DDDDDD';"                       << endl;
-  oFile << "    ctx.StrokeStyle = '#DDDDDD';"                       << endl;
+  // Set the colour to grey
+  oFile << "    ctx.strokeStyle = '#DDDDDD';"                       << endl;
+
+  // Now draw the isometric grid
+  T X, Y;
+
+  // Lines parallel to the x-axis
+  for (T j=minY; j<=maxY; j+= pow(10, m)){
+    for (T k=minZ; k<=maxZ; k+= pow(10, m)){
+      oFile << "    ctx.beginPath();"                             << endl;
+        
+      X = M + f * ( (j + minX) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (j - minX) * sin(PI/6) + k - minB) + 0.5;
+      oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
+
+      X = M + f * ( (j + maxX) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (j - maxX) * sin(PI/6) + k - minB) + 0.5;
+      oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
+      oFile << "    ctx.stroke();"                             << endl;
+    }
+  }
+
+  // Lines parallel to the y-axis
+  for (T i=minX; i<=maxX; i+= pow(10, m)){
+    for (T k=minZ; k<=maxZ; k+= pow(10, m)){
+      oFile << "    ctx.beginPath();"                             << endl;
+        
+      X = M + f * ( (minY + i) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (minY - i) * sin(PI/6) + k - minB) + 0.5;
+      oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
+
+      X = M + f * ( (maxX + i) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (maxX - i) * sin(PI/6) + k - minB) + 0.5;
+      oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
+      oFile << "    ctx.stroke();"                                << endl;
+    }
+  }
+
+  // Lines parallel to the z-axis
+  for (T i=minX; i<=maxX; i+= pow(10, m)){
+    for (T j=minY; j<=maxY; j+= pow(10, m)){
+      oFile << "    ctx.beginPath();"                             << endl;
+        
+      X = M + f * ( (j + i) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (j - i) * sin(PI/6) + minZ - minB) + 0.5;
+      oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
+
+      X = M + f * ( (j + i) * cos(PI/6) - minA ) + 0.5;
+      Y = M + f * ( (j - i) * sin(PI/6) + maxZ - minB) + 0.5;
+      oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
+      oFile << "    ctx.stroke();"                                << endl;
+    }
+  }
   
+  T X1, X2, Y1, Y2;
+  oFile << "    ctx.strokeStyle = '#000000';"                     << endl;
 
   // Loop over all of the polygons
   for (it = m_library.begin(); it != m_library.end(); it++){
     // Loop over all of the vertices
     for (int i=0; i<it->second->N(); i++){
-      vertex<T> vtx = (*(it->second))[i];
+      vertex<T> vtx1 = (*(it->second))[i];
+      vertex<T> vtx2 = (*(it->second))[(i + 1) % it->second->N()];
 
       // Calcualte X & Y
-      T X = M + f * ( (vtx.y() + vtx.x()) * sin(PI/6) - minA );
-      T Y = M + f * ( (vtx.y() - vtx.x()) * sin(PI/6) + vtx.z() - minB);
+      X1 = M + f * ( (vtx1.y() + vtx1.x()) * cos(PI/6) - minA );
+      Y1 = M + f * ( (vtx1.y() - vtx1.x()) * sin(PI/6) + vtx1.z() - minB);
+
+      X2 = M + f * ( (vtx2.y() + vtx2.x()) * cos(PI/6) - minA );
+      Y2 = M + f * ( (vtx2.y() - vtx2.x()) * sin(PI/6) + vtx2.z() - minB);
  
+      oFile << "    ctx.beginPath();"                             << endl;
+      oFile << "    ctx.moveTo(" << X1 << ", " << Y1 << ");"      << endl;
+      oFile << "    ctx.lineTo(" << X2 << ", " << Y2 << ");"      << endl;
+      oFile << "    ctx.stroke();"                                << endl;
     }
   }
   
