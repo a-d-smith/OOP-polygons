@@ -269,17 +269,19 @@ template <class T> void vertex<T>::rotate(T p_x1, T p_y1, T p_z1, T p_x2, T p_y2
   this->translate(-p_x1, -p_y1, -p_z1); 
   
   //    (2) Rotate around the z-axis so the rotation axis is in the xz plane
-  this->rotateZ( -atan2(p_y2 - p_y1, p_x2 - p_x1) );
+	T alpha = atan2( p_y2 - p_y1, p_x2 - p_x1 );
+  this->rotateZ( -alpha );
 
   //    (3) Rotate around the y-axis so the rotation axis is along the z-axis
-  this->rotateY( -(PI/2 - atan2(p_z2 - p_z1, p_x2 - p_x1)) );
+	T beta = atan2(pow(pow(p_x2 - p_x1, 2) + pow(p_y2 - p_y1, 2), 0.5), p_z2 - p_z1);
+  this->rotateY( -beta );
 
   //    (4) Rotate by theta around the z-axis
   this->rotateZ(p_theta);
 
   //    (5) Do the inverse of steps (3), (2) and (1).
-  this->rotateY( PI/2 - atan2(p_z2 - p_z1, p_x2 - p_x1) );
-  this->rotateZ( atan2(p_y2 - p_y1, p_x2 - p_x1) );
+  this->rotateY( beta );
+  this->rotateZ( alpha );
   this->translate(p_x1, p_y1, p_z1); 
 }
 

@@ -129,24 +129,32 @@ template <class T> void manager<T>::display(string p_filename){
     exit(1);
   }
 
-  // Start off the HTML file
-  oFile << "<!DOCTYPE HTML>"                                         << endl;
-  oFile << "<head>"                                                  << endl;
-  oFile << "  <title>Polygon Visualisation</title>"                  << endl;
-  oFile << "</head>"                                                 << endl;
-  oFile << "<body>"                                                  << endl;
-  oFile << "  <h1>Polygon Visualisation</h1>"                        << endl; 
-  oFile << "  <canvas id='canv' width='800' height='600'>"           << endl;
-  oFile << "    Sorry your browser doesn't support the HTML5 canvas" << endl;
-  oFile << "  </canvas>"                                             << endl;
-  oFile << "  <script type='text/javascript'>"                       << endl;
-  oFile << "    // Set up the canvas"                                << endl;
-  oFile << "    var c = document.getElementById('canv');"            << endl;
-  oFile << "    var ctx = c.getContext('2d');"                       << endl;
+  // Define the size of the canvas on to which we are drawing (px)
+  T W = 1000;
+  T H = 700;
 
-  // The canvas on to which we are drawing has width 800px, height 600px
-  T W = 800;
-  T H = 600;
+  // Start off the HTML file
+  oFile << "<!DOCTYPE HTML>"                                               << endl;
+  oFile << "<head>"                                                        << endl;
+  oFile << "  <title>Polygon Visualisation</title>"                        << endl;
+  oFile << "</head>"                                                       << endl;
+  oFile << "<body>"                                                        << endl;
+  oFile << "  <h1>Polygon Visualisation</h1>"                              << endl; 
+  oFile << "  <canvas id='canv' width='" << W << "' height='" << H << "'>" << endl;
+  oFile << "    Sorry your browser doesn't support the HTML5 canvas"       << endl;
+  oFile << "  </canvas>"                                                   << endl;
+	oFile << "  <style type='text/css'>"                                     << endl;
+	oFile << "    body{ font-family:'Courier New' monospace;"                << endl; 
+	oFile << "      text-align:center;}"                                     << endl;
+	oFile << "    #canv{"                                                    << endl;
+	oFile << "      width:" << W << "px; height:" << H << "px;"              << endl;
+	oFile << "      margin:auto; display:block; padding:0;}"                 << endl;
+	oFile << "  </style> "                                                   << endl;
+  oFile << "  <script type='text/javascript'>"                             << endl;
+  oFile << "    // Set up the canvas"                                      << endl;
+  oFile << "    var c = document.getElementById('canv');"                  << endl;
+  oFile << "    var ctx = c.getContext('2d');"                             << endl;
+
 
   // The point (0, 0) is defied to be the top left corner and (W, H) is the bottom right
   // For isometric projection (assuming 1:1 scale, and coinciding origins for now), 
@@ -172,6 +180,9 @@ template <class T> void manager<T>::display(string p_filename){
   T minZ =  9999999999999999;
   T maxZ = -9999999999999999;
 
+	// Define a padding factor
+	T pad = 2;
+
   // Loop over all of the polygons
   typename map<string, polygon<T>*>::iterator it;
   for (it = m_library.begin(); it != m_library.end(); it++){
@@ -184,20 +195,20 @@ template <class T> void manager<T>::display(string p_filename){
       T b = (vtx.y() - vtx.x()) * sin(PI/6) + vtx.z();
 
       // Check a
-      minA = min(a, minA);
-      maxA = max(a, maxA);
+      minA = min(pad*a, minA);
+      maxA = max(pad*a, maxA);
 
       // Check b
-      minB = min(b, minB);
-      maxB = max(b, maxB);
+      minB = min(pad*b, minB);
+      maxB = max(pad*b, maxB);
 
       // Check x, y & z
-      minX = min(vtx.x(), minX);
-      maxX = max(vtx.x(), maxX);
-      minY = min(vtx.y(), minY);
-      maxY = max(vtx.y(), maxY);
-      minZ = min(vtx.z(), minZ);
-      maxZ = max(vtx.z(), maxZ);
+      minX = min(pad*vtx.x(), minX);
+      maxX = max(pad*vtx.x(), maxX);
+      minY = min(pad*vtx.y(), minY);
+      maxY = max(pad*vtx.y(), maxY);
+      minZ = min(pad*vtx.z(), minZ);
+      maxZ = max(pad*vtx.z(), maxZ);
     }
   }
 
@@ -210,7 +221,7 @@ template <class T> void manager<T>::display(string p_filename){
   // Now we can convert between (x, y, z) to the 2D canvas plane (X, Y) using:
   // 
   //   X = M + f * ( (y + x)*sin(PI/6) - minA );
-  //   Y = M + f * ( (y + x)*sin(PI/6) + z - minB );
+  //   Y = H - (M + f * ( (y + x)*sin(PI/6) + z - minB ));
 
 
   // Here we want to draw the isometric grid on to which we shall draw our polygons.
@@ -221,9 +232,10 @@ template <class T> void manager<T>::display(string p_filename){
   // to draw the axis normal to the plane in which case we shall set the max and min
   // values by hand
 
+	T scale = max(max(abs(maxX - minX), abs(maxY - minY)), abs(maxZ - minZ)) / 10;
 
-  if (abs(maxZ - minZ) == 0){
-    if (abs(maxY - minY) == 0){
+  if (abs(maxZ - minZ) < scale){
+    if (abs(maxY - minY) < scale){
       maxY = maxX;
       minY = minX;
     }
@@ -231,8 +243,8 @@ template <class T> void manager<T>::display(string p_filename){
     minZ = minY;
   }
 
-  if (abs(maxY - minY) == 0){
-    if (abs(maxX - minX) == 0){
+  if (abs(maxY - minY) < scale){
+    if (abs(maxX - minX) < scale){
       maxX = maxZ;
       minX = minZ;
     }
@@ -240,8 +252,8 @@ template <class T> void manager<T>::display(string p_filename){
     minY = minX;
   }
 
-  if (abs(maxX - minX) == 0){
-    if (abs(maxZ - minZ) == 0){
+  if (abs(maxX - minX) < scale){
+    if (abs(maxZ - minZ) < scale){
       maxZ = maxY;
       minZ = minY;
     }
@@ -249,25 +261,27 @@ template <class T> void manager<T>::display(string p_filename){
     minX = minZ;
   }
 
-  // We want at least 10 ticks on the display...
+  // We want at least N ticks on each axis of the display...
   // For a tick size of 10^m, we want to find m such that the number of ticks,
-  //   T(m) >= 10 && T(m+1) < 10;
+  //   T(m) >= N && T(m+1) < N;
   //
   // T(m) = floor((maxX - minX)/(10^m)) (on the x-axis)
+
+	int N = 3;
 
   // First try mx = 0
   int mx = 0;
   bool optimum{false};
 
   while (!optimum){
-    if (floor((maxX - minX) / pow(10,mx)) < 10){
-      // T(m) < 10
+    if (floor((maxX - minX) / pow(10,mx)) < N){
+      // T(m) < N
       // Need to reduce mx
       mx--;    
     }
     else{
-      // Need to check T(m+1) < 10
-      if (floor((maxX - minX) / pow(10, mx+1)) < 10){
+      // Need to check T(m+1) < N
+      if (floor((maxX - minX) / pow(10, mx+1)) < N){
         // This scale is good  
         optimum = true;
       }
@@ -283,14 +297,14 @@ template <class T> void manager<T>::display(string p_filename){
   optimum = false;
 
   while (!optimum){
-    if (floor((maxY - minY) / pow(10, my)) < 10){
-      // T(m) < 10
+    if (floor((maxY - minY) / pow(10, my)) < N){
+      // T(m) < N
       // Need to reduce my
       my--;    
     }
     else{
-      // Need to check T(m+1) < 10
-      if (floor((maxY - minY) / pow(10, my+1)) < 10){
+      // Need to check T(m+1) < N
+      if (floor((maxY - minY) / pow(10, my+1)) < N){
         // This scale is good  
         optimum = true;
       }
@@ -305,14 +319,14 @@ template <class T> void manager<T>::display(string p_filename){
   optimum = false;
 
   while (!optimum){
-    if (floor((maxZ - minZ) / pow(10, mz)) < 10){
-      // T(m) < 10
+    if (floor((maxZ - minZ) / pow(10, mz)) < N){
+      // T(m) < N
       // Need to reduce mz
       mz--;    
     }
     else{
-      // Need to check T(m+1) < 10
-      if (floor((maxZ - minZ) / pow(10, mz+1)) < 10){
+      // Need to check T(m+1) < N
+      if (floor((maxZ - minZ) / pow(10, mz+1)) < N){
         // This scale is good  
         optimum = true;
       }
@@ -327,8 +341,18 @@ template <class T> void manager<T>::display(string p_filename){
   int m = min(mx, my);
   m = min(m, mz);
 
+	// Now quantize the min and max X, Y, Z to be an integer multiple of these ticks
+	// This ensures that (0, 0, 0) is at the intersection of grid lines
+	minX = floor(minX/pow(10, m))*pow(10, m);
+	minY = floor(minY/pow(10, m))*pow(10, m);
+	minZ = floor(minZ/pow(10, m))*pow(10, m);
+
+	maxX = ceil(maxX/pow(10, m))*pow(10, m);
+	maxY = ceil(maxY/pow(10, m))*pow(10, m);
+	maxZ = ceil(maxZ/pow(10, m))*pow(10, m);
+
   // Set the colour to grey
-  oFile << "    ctx.strokeStyle = '#DDDDDD';"                       << endl;
+  oFile << "    ctx.strokeStyle = '#EEEEEE';"										  << endl;
 
   // Now draw the isometric grid
   T X, Y;
@@ -339,11 +363,11 @@ template <class T> void manager<T>::display(string p_filename){
       oFile << "    ctx.beginPath();"                             << endl;
         
       X = M + f * ( (j + minX) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (j - minX) * sin(PI/6) + k - minB) + 0.5;
+      Y = H - (M + f * ( (j - minX) * sin(PI/6) + k - minB)) + 0.5;
       oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
 
       X = M + f * ( (j + maxX) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (j - maxX) * sin(PI/6) + k - minB) + 0.5;
+      Y = H - (M + f * ( (j - maxX) * sin(PI/6) + k - minB)) + 0.5;
       oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
       oFile << "    ctx.stroke();"                             << endl;
     }
@@ -355,11 +379,11 @@ template <class T> void manager<T>::display(string p_filename){
       oFile << "    ctx.beginPath();"                             << endl;
         
       X = M + f * ( (minY + i) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (minY - i) * sin(PI/6) + k - minB) + 0.5;
+      Y = H - (M + f * ( (minY - i) * sin(PI/6) + k - minB)) + 0.5;
       oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
 
-      X = M + f * ( (maxX + i) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (maxX - i) * sin(PI/6) + k - minB) + 0.5;
+      X = M + f * ( (maxY + i) * cos(PI/6) - minA ) + 0.5;
+      Y = H - (M + f * ( (maxY - i) * sin(PI/6) + k - minB)) + 0.5;
       oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
       oFile << "    ctx.stroke();"                                << endl;
     }
@@ -371,43 +395,125 @@ template <class T> void manager<T>::display(string p_filename){
       oFile << "    ctx.beginPath();"                             << endl;
         
       X = M + f * ( (j + i) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (j - i) * sin(PI/6) + minZ - minB) + 0.5;
+      Y = H - (M + f * ( (j - i) * sin(PI/6) + minZ - minB)) + 0.5;
       oFile << "    ctx.moveTo(" << X << ", " << Y << ");"        << endl;
 
       X = M + f * ( (j + i) * cos(PI/6) - minA ) + 0.5;
-      Y = M + f * ( (j - i) * sin(PI/6) + maxZ - minB) + 0.5;
+      Y = H - (M + f * ( (j - i) * sin(PI/6) + maxZ - minB)) + 0.5;
       oFile << "    ctx.lineTo(" << X << ", " << Y << ");"        << endl;
       oFile << "    ctx.stroke();"                                << endl;
     }
   }
-  
-  T X1, X2, Y1, Y2;
-  oFile << "    ctx.strokeStyle = '#000000';"                     << endl;
+
+  // Set the colour to black and the font
+  oFile << "    ctx.strokeStyle = '#000000';"										  << endl;
+	oFile << "    ctx.font = '20px monospace';"                     << endl;
+	oFile << "    ctx.textAlign = 'center';"                        << endl;
+	oFile << "    ctx.textBaseline = 'middle';"                     << endl;
+
+	// Draw the axes
+
+	// x-axis
+	oFile << "    ctx.beginPath() "                                 << endl;
+	T x{0};
+	T y{0};
+	T z{0};
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
+	x = maxX;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
+  oFile << "    ctx.stroke();"                                    << endl;
+	x *= 1.05;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+	oFile << "    ctx.fillText('x', " << X << ", " << Y << "); "    << endl;
+
+	// y-axis
+	oFile << "    ctx.beginPath() "                                 << endl;
+	x = 0;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
+	y = maxY;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
+  oFile << "    ctx.stroke();"                                    << endl;
+	y *= 1.05;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+	oFile << "    ctx.fillText('y', " << X << ", " << Y << "); "    << endl;
+
+	// z-axis
+	oFile << "    ctx.beginPath() "                                 << endl;
+	y = 0;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
+	z = maxZ;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+  oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
+  oFile << "    ctx.stroke();"                                    << endl;
+	z *= 1.05;
+  X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
+  Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
+	oFile << "    ctx.fillText('z', " << X << ", " << Y << "); "    << endl;
+
+
+
+  T X1, Y1;
+  // Loop over all of the polygons
+  for (it = m_library.begin(); it != m_library.end(); it++){
+		// Fill the colour
+		oFile << "    ctx.fillStyle   = 'rgba(0, 0, 0, 0.2)';"        << endl;
+    oFile << "    ctx.beginPath();"                               << endl;
+    // Loop over all of the vertices
+    for (int i=0; i<=it->second->N(); i++){
+      vertex<T> vtx1 = (*(it->second))[i % it->second->N()];
+
+      // Calcualte X & Y
+      X1 = M + f * ( (vtx1.y() + vtx1.x()) * cos(PI/6) - minA ) + 0.5;
+      Y1 = H - (M + f * ( (vtx1.y() - vtx1.x()) * sin(PI/6) + vtx1.z() - minB)) + 0.5;
+
+			if (i == 0){
+	      oFile << "    ctx.moveTo(" << X1 << ", " << Y1 << ");"    << endl;
+			}
+			else{
+	      oFile << "    ctx.lineTo(" << X1 << ", " << Y1 << ");"    << endl;
+			}
+    }
+    oFile << "    ctx.fill();"                                    << endl;
+  }
 
   // Loop over all of the polygons
   for (it = m_library.begin(); it != m_library.end(); it++){
+		// Stroke the outline
+    oFile << "    ctx.beginPath();"                               << endl;
     // Loop over all of the vertices
-    for (int i=0; i<it->second->N(); i++){
-      vertex<T> vtx1 = (*(it->second))[i];
-      vertex<T> vtx2 = (*(it->second))[(i + 1) % it->second->N()];
+    for (int i=0; i<=it->second->N(); i++){
+      vertex<T> vtx1 = (*(it->second))[i % it->second->N()];
 
       // Calcualte X & Y
-      X1 = M + f * ( (vtx1.y() + vtx1.x()) * cos(PI/6) - minA );
-      Y1 = M + f * ( (vtx1.y() - vtx1.x()) * sin(PI/6) + vtx1.z() - minB);
+      X1 = M + f * ( (vtx1.y() + vtx1.x()) * cos(PI/6) - minA ) + 0.5;
+      Y1 = H - (M + f * ( (vtx1.y() - vtx1.x()) * sin(PI/6) + vtx1.z() - minB)) + 0.5;
 
-      X2 = M + f * ( (vtx2.y() + vtx2.x()) * cos(PI/6) - minA );
-      Y2 = M + f * ( (vtx2.y() - vtx2.x()) * sin(PI/6) + vtx2.z() - minB);
- 
-      oFile << "    ctx.beginPath();"                             << endl;
-      oFile << "    ctx.moveTo(" << X1 << ", " << Y1 << ");"      << endl;
-      oFile << "    ctx.lineTo(" << X2 << ", " << Y2 << ");"      << endl;
-      oFile << "    ctx.stroke();"                                << endl;
+			if (i == 0){
+	      oFile << "    ctx.moveTo(" << X1 << ", " << Y1 << ");"    << endl;
+			}
+			else{
+	      oFile << "    ctx.lineTo(" << X1 << ", " << Y1 << ");"    << endl;
+			}
     }
+    oFile << "    ctx.stroke();"                                  << endl;
   }
   
   // Finish off the HTML file
-  oFile << "  </script>"                                             << endl;
-  oFile << "</body>"                                                 << endl;
+  oFile << "  </script>"                                          << endl;
+  oFile << "</body>"                                              << endl;
 
   // Close the file
   oFile.close();

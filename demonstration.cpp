@@ -13,16 +13,28 @@ int main(){
   // Initiate an intance of the manager
   manager<double> m;
 
-  m.add(new square<double>(0, 0, 1), "base");
+  m.add(new square<double>(0, 0, 4), "base");
 
-  m.add(new square<double>(0, 0, 1), "side1");
-  m.get("side1")->listVertices();
+  m.add(new square<double>(0, 0, 4), "side1");
+	m.get("side1")->rotate(0,0,0, 1,0,0, PI/2);
+	m.get("side1")->translate(0, 2, 2);
 
-  m.get("side1")->rotate(0, 0, 0, 1, 0, 0, PI);
-  m.get("side1")->listVertices();
+  m.add(new square<double>(0, 0, 4), "side2");
+	m.get("side2")->rotate(0,0,0, 1,0,0, -PI/2);
+	m.get("side2")->translate(0, -2, 2);
 
-  m.get("side1")->translate(0.5, 0.5, 0);
-  m.get("side1")->listVertices();
+  m.add(new square<double>(0, 0, 4), "side3");
+	m.get("side3")->rotate(0,0,0, 0,1,0, PI/2);
+	m.get("side3")->translate(2, 0, 2);
+
+  m.add(new square<double>(0, 0, 4), "side4");
+	m.get("side4")->rotate(0,0,0, 0,1,0, -PI/2);
+	m.get("side4")->translate(-2, 0, 2);
+
+  m.add(new square<double>(0, 0, 4), "top");
+	m.get("top")->translate(0, 0, 4);
+
+	m.get("side2")->rotateCentre(PI/4);
 
   m.listAll();
 
