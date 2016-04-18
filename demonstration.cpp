@@ -12,37 +12,48 @@ int main(){
 
   // Initiate an intance of the manager
   manager<double> m;
-	/*
-  m.add(new square<double>(0, 0, 4), "base");
+	
+  m.add(new rectangle<double>(0, 0, 6, 4), "base");
 
-  m.add(new square<double>(0, 0, 4), "side1");
+  m.add(new rectangle<double>(0, 0, 6, 4), "side1");
 	m.get("side1")->rotate(0,0,0, 1,0,0, PI/2);
 	m.get("side1")->translate(0, 2, 2);
 
-  m.add(new square<double>(0, 0, 4), "side2");
+  m.add(new rectangle<double>(0, 0, 6, 4), "side2");
 	m.get("side2")->rotate(0,0,0, 1,0,0, -PI/2);
 	m.get("side2")->translate(0, -2, 2);
 
   m.add(new square<double>(0, 0, 4), "side3");
 	m.get("side3")->rotate(0,0,0, 0,1,0, PI/2);
-	m.get("side3")->translate(2, 0, 2);
+	m.get("side3")->translate(3, 0, 2);
 
   m.add(new square<double>(0, 0, 4), "side4");
 	m.get("side4")->rotate(0,0,0, 0,1,0, -PI/2);
-	m.get("side4")->translate(-2, 0, 2);
+	m.get("side4")->translate(-3, 0, 2);
 
-  m.add(new square<double>(0, 0, 4), "top");
-	m.get("top")->translate(0, 0, 4);
-	*/
+  m.add(new rectangle<double>(0, 0, 7, 5), "roofBase");
+	m.get("roofBase")->translate(0, 0, 4);
 
-	m.add(new isoTriangle<double>(0,0,70), "Rhiannon");
-	m.add(new rectangle<double>(1,2,12,45), "Rhiannon2");
-	m.get("Rhiannon2")->rotate(2,2,2,4,3,2, PI/2);
-	m.get("Rhiannon2")->translate(0,100,89);
-  m.listAll();
+	m.add(new isoTriangle<double>(0, 0, 5), "roofSide");
+	m.get("roofSide")->rotate(0,0,0, 0,1,0, PI/2);
+	m.get("roofSide")->translate(3.5, 0, 4 + pow(2, 0.5));
+
+	m.add(new isoTriangle<double>(0, 0, 5), "roofSide2");
+	m.get("roofSide2")->rotate(0,0,0, 0,1,0, PI/2);
+	m.get("roofSide2")->translate(-3.5, 0, 4 + pow(2, 0.5));
+
+  m.add(new rectangle<double>(0, 0, 7, 5), "roofTop");
+	m.get("roofTop")->translate(0, 0, 4);
+	m.get("roofTop")->rotate(0, -2.5, 4, 1, -2.5, 4, PI/3);
+
+  m.add(new rectangle<double>(0, 0, 7, 5), "roofTop2");
+	m.get("roofTop2")->translate(0, 0, 4);
+	m.get("roofTop2")->rotate(0, +2.5, 4, 1, +2.5, 4, -PI/3);
 
   m.display("testDisplay");
 
+
+	// REMEMBER ISOTRIANGLE DEFINITION IS WRONG, YOU HAVE DONE EQUILATERAL DUMBASSS
 
   return 0;
 }
