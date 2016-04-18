@@ -181,7 +181,7 @@ template <class T> void manager<T>::display(string p_filename){
   T maxZ = -9999999999999999;
 
 	// Define a padding factor
-	T pad = 2;
+	T pad = 1.5;
 
   // Loop over all of the polygons
   typename map<string, polygon<T>*>::iterator it;
@@ -421,12 +421,12 @@ template <class T> void manager<T>::display(string p_filename){
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
-	x = maxX;
+	x = maxX*( 1 + 1/pad)/2;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
   oFile << "    ctx.stroke();"                                    << endl;
-	x *= 1.05;
+	x = maxX*(1 + 1/pad)/2 + 20/f;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
 	oFile << "    ctx.fillText('x', " << X << ", " << Y << "); "    << endl;
@@ -437,12 +437,12 @@ template <class T> void manager<T>::display(string p_filename){
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
-	y = maxY;
+	y = maxY*(1 + 1/pad)/2;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
   oFile << "    ctx.stroke();"                                    << endl;
-	y *= 1.05;
+	y = maxY*(1 + 1/pad)/2 + 20/f;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
 	oFile << "    ctx.fillText('y', " << X << ", " << Y << "); "    << endl;
@@ -453,12 +453,12 @@ template <class T> void manager<T>::display(string p_filename){
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.moveTo(" << X << ", " << Y << ");"            << endl;
-	z = maxZ;
+	z = maxZ*(1 + 1/pad)/2;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
   oFile << "    ctx.lineTo(" << X << ", " << Y << ");"            << endl;
   oFile << "    ctx.stroke();"                                    << endl;
-	z *= 1.05;
+	z = maxZ*(1 + 1/pad)/2 + 20/f;
   X = M + f * ( (y + x) * cos(PI/6) - minA ) + 0.5;
   Y = H - (M + f * ( (y - x) * sin(PI/6) + z - minB)) + 0.5;
 	oFile << "    ctx.fillText('z', " << X << ", " << Y << "); "    << endl;

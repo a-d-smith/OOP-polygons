@@ -12,7 +12,7 @@ int main(){
 
   // Initiate an intance of the manager
   manager<double> m;
-
+	/*
   m.add(new square<double>(0, 0, 4), "base");
 
   m.add(new square<double>(0, 0, 4), "side1");
@@ -33,9 +33,12 @@ int main(){
 
   m.add(new square<double>(0, 0, 4), "top");
 	m.get("top")->translate(0, 0, 4);
+	*/
 
-	m.get("side2")->rotateCentre(PI/4);
-
+	m.add(new isoTriangle<double>(0,0,70), "Rhiannon");
+	m.add(new rectangle<double>(1,2,12,45), "Rhiannon2");
+	m.get("Rhiannon2")->rotate(2,2,2,4,3,2, PI/2);
+	m.get("Rhiannon2")->translate(0,100,89);
   m.listAll();
 
   m.display("testDisplay");
