@@ -1,4 +1,3 @@
-// ------------------------------------------------------------------------------------------
 // This "vertex" class template is defined to hold a cartesian position vector (x, y, z) 
 // 
 // This template can be used with mutliple data types, for example double or float, depending
@@ -21,7 +20,7 @@ namespace polygons{
 template <class T>
 class vertex {
   protected:
-    // An array to hold the x, y and z coordinates of the vertex
+	  // An array to hold the x, y and z coordinates of the vertex
     T m_x[3];
   public: 
     // CONSTRUCTORS AND DESTRUCTORS
@@ -48,12 +47,11 @@ class vertex {
     // ACCESS FUNCTIONS
     // --------------------------------------------------------------------------------------
 
-    // Get the x, y, z coordinates separetely
-    T x();
-    T y();
-    T z();
+    T x(); 
+    T y(); 
+    T z(); 
 
-		// Get the coordinates directly
+		// Access function for the ith positional component.
 		T x(int p_i);
 
 		// Function to output the vertex using <<
@@ -62,12 +60,12 @@ class vertex {
 			return p_outStream;
 		}
 
-    // Set the x, y, z coordinates separately
-    void x(T p_x);
+		// Setter functions for the x, y, z-components 
+    void x(T p_x); 
     void y(T p_y);
     void z(T p_z);
 
-    // Set the x, y, z coordinates in one go
+    // Setter function for all components in one go
     void pos(T p_x, T p_y, T p_z);
 
     // --------------------------------------------------------------------------------------
@@ -76,7 +74,7 @@ class vertex {
     // GEOMETRICAL TRANSFORMATIONS ON THE VERTEX
     // --------------------------------------------------------------------------------------
 
-    // Translate the vertex by a given amount
+    // Translate the vertex by a given amount (p_x, p_y, p_z)
     void translate(T p_x, T p_y, T p_z);
 
     // Rotate the vertex about the x-axis through an angle theta (specified in radians)
@@ -88,17 +86,17 @@ class vertex {
     // Rotate the vertex about the z-axis through an angle theta (specified in radians)
     void rotateZ(T p_theta);
 
-    // Rotate the vertex around the line joining the points (x1, y1, z1) & (x2, y2, z2)
-    // through an angle theta (specified in radians).
-    // 
-    // e.g. to rotate the vertex around the z-axis (which goes through the origin) through an
-    // angle of 90 degrees, use:
-    // 
-    //     myVertex.rotate(0,0,0, 0,0,1, PI/2)
-    // 
+    /* Rotate the vertex around the line joining the points (x1, y1, z1) & (x2, y2, z2)
+     * through an angle theta (specified in radians).
+     * 
+     * e.g. to rotate the vertex around the z-axis (which goes through the origin) through an
+     * angle of 90 degrees, use:
+     * 
+     *     myVertex.rotate(0,0,0, 0,0,1, PI/2);
+     */ 
     void rotate(T p_x1, T p_y1, T p_z1, T p_x2, T p_y2, T p_z2, T p_theta);
 
-    // Scale the distance of the vertex from a point (x, y, z) by factors fx, fy, fz
+    // Scale the distance of the vertex from a point (p_x, p_y, p_z) by factors p_fx, p_fy, p_fz
     void scale(T p_x, T p_y, T p_z, T p_fx, T p_fy, T p_fz);
      
     // --------------------------------------------------------------------------------------

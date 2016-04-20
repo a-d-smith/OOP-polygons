@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.8.12)  20 APR 2016 21:26
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.8.12)  20 APR 2016 23:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1107,29 +1107,22 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 6.
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 8.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 4.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 8.
+(Font)              scaled to size 10.79993pt on input line 4.
 LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
-(Font)              scaled to size 10.79993pt on input line 8.
-LaTeX Font Info:    Try loading font information for TS1+phv on input line 11.
-
+(Font)              scaled to size 10.79993pt on input line 4.
+LaTeX Font Info:    Try loading font information for TS1+phv on input line 7.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
 File: ts1phv.fd 2001/06/04 scalable font definitions for TS1/phv.
 )
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 11.
+(Font)              scaled to size 8.99994pt on input line 7.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 7.19995pt on input line 38.
+(Font)              scaled to size 7.19995pt on input line 34.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 38.
-LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
-(Font)              scaled to size 8.99994pt on input line 56.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 34.
 )
 (./classpolygons_1_1equiTriangle.tex
 
@@ -1148,7 +1141,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1equiTriangle.pdf, id=181, 501.875pt x 340.25119pt>
+<classpolygons_1_1equiTriangle.pdf, id=176, 501.875pt x 340.25119pt>
 File: classpolygons_1_1equiTriangle.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1equiTriangle.pdf>
@@ -1172,7 +1165,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1hexagon.pdf, id=203, 501.875pt x 257.37154pt>
+<classpolygons_1_1hexagon.pdf, id=196, 501.875pt x 257.37154pt>
 File: classpolygons_1_1hexagon.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1hexagon.pdf>
@@ -1195,7 +1188,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1isoTriangle.pdf, id=204, 501.875pt x 340.25119pt>
+<classpolygons_1_1isoTriangle.pdf, id=197, 501.875pt x 340.25119pt>
 File: classpolygons_1_1isoTriangle.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1isoTriangle.pdf>
@@ -1237,7 +1230,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1pentagon.pdf, id=230, 501.875pt x 250.9375pt>
+<classpolygons_1_1pentagon.pdf, id=223, 501.875pt x 250.9375pt>
 File: classpolygons_1_1pentagon.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1pentagon.pdf>
@@ -1261,7 +1254,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1polygon.pdf, id=262, 501.875pt x 85.06781pt>
+<classpolygons_1_1polygon.pdf, id=254, 501.875pt x 85.06781pt>
 File: classpolygons_1_1polygon.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1polygon.pdf>
@@ -1284,7 +1277,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1rectangle.pdf, id=267, 501.875pt x 374.06752pt>
+<classpolygons_1_1rectangle.pdf, id=259, 501.875pt x 374.06752pt>
 File: classpolygons_1_1rectangle.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1rectangle.pdf>
@@ -1308,7 +1301,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 3.
 
-<classpolygons_1_1square.pdf, id=299, 501.875pt x 374.06752pt>
+<classpolygons_1_1square.pdf, id=292, 501.875pt x 374.06752pt>
 File: classpolygons_1_1square.pdf Graphic file (type pdf)
 
 <use classpolygons_1_1square.pdf>
@@ -1342,28 +1335,27 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 160.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 160.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 160.
 Package rerunfilecheck Info: File `refman.out' has not changed.
-(rerunfilecheck)             Checksum: 0CC3981BB553193B098B7BFFE6161DFA;4034.
+(rerunfilecheck)             Checksum: 39048BDB25D7DB2A978AB299F479D8AF;3869.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 160.
  ) 
 Here is how much of TeX's memory you used:
- 12420 strings out of 493304
- 177983 string characters out of 6139871
- 257331 words of memory out of 5000000
- 15519 multiletter control sequences out of 15000+600000
- 77538 words of font info for 115 fonts, out of 8000000 for 9000
+ 12384 strings out of 493304
+ 177489 string characters out of 6139871
+ 257329 words of memory out of 5000000
+ 15491 multiletter control sequences out of 15000+600000
+ 74186 words of font info for 111 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  48i,15n,43p,368b,416s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic
-/uhvb8ac.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb
->
-Output written on refman.pdf (17 pages, 99619 bytes).
+/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/urw/helvetic/uhvb8ac.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvet
+ic/uhvr8a.pfb>
+Output written on refman.pdf (17 pages, 91229 bytes).
 PDF statistics:
- 419 PDF objects out of 1000 (max. 8388607)
- 376 compressed objects within 4 object streams
- 134 named destinations out of 1000 (max. 500000)
- 180 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 408 PDF objects out of 1000 (max. 8388607)
+ 366 compressed objects within 4 object streams
+ 132 named destinations out of 1000 (max. 500000)
+ 172 words of extra memory for PDF output out of 10000 (max. 10000000)
 

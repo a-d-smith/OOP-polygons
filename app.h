@@ -16,9 +16,6 @@ namespace polygons{
 // A class to control user input and interface with the manager
 // ------------------------------------------------------------------------------------------
 
-/*!
- * This is a cool comment about the app class
- */
 template <class T>
 class app{
   protected:

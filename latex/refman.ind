@@ -2,7 +2,7 @@
 
   \item {polygons\discretionary {-}{}{}::app$<$ T $>$}, \hyperpage{7}
   \item {polygons\discretionary {-}{}{}::equi\discretionary {-}{}{}Triangle$<$ T $>$}, 
-		\hyperpage{8}
+		\hyperpage{7}
   \item {polygons\discretionary {-}{}{}::hexagon$<$ T $>$}, 
 		\hyperpage{8}
   \item {polygons\discretionary {-}{}{}::iso\discretionary {-}{}{}Triangle$<$ T $>$}, 

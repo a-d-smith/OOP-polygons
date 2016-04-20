@@ -5,8 +5,7 @@
 \contentsline {section}{\numberline {3.1}Class List}{5}{section.3.1}
 \contentsline {chapter}{\numberline {4}Class Documentation}{7}{chapter.4}
 \contentsline {section}{\numberline {4.1}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:app$<$ T $>$ Class Template Reference}{7}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{7}{subsection.4.1.1}
-\contentsline {section}{\numberline {4.2}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:equi\discretionary {-}{}{}Triangle$<$ T $>$ Class Template Reference}{8}{section.4.2}
+\contentsline {section}{\numberline {4.2}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:equi\discretionary {-}{}{}Triangle$<$ T $>$ Class Template Reference}{7}{section.4.2}
 \contentsline {section}{\numberline {4.3}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:hexagon$<$ T $>$ Class Template Reference}{8}{section.4.3}
 \contentsline {section}{\numberline {4.4}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:iso\discretionary {-}{}{}Triangle$<$ T $>$ Class Template Reference}{8}{section.4.4}
 \contentsline {section}{\numberline {4.5}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:manager$<$ T $>$ Class Template Reference}{9}{section.4.5}
@@ -15,4 +14,4 @@
 \contentsline {section}{\numberline {4.8}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:rectangle$<$ T $>$ Class Template Reference}{11}{section.4.8}
 \contentsline {section}{\numberline {4.9}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:square$<$ T $>$ Class Template Reference}{11}{section.4.9}
 \contentsline {section}{\numberline {4.10}polygons\discretionary {-}{}{}:\discretionary {-}{}{}:vertex$<$ T $>$ Class Template Reference}{12}{section.4.10}
-\contentsline {chapter}{Index}{13}{section*.25}
+\contentsline {chapter}{Index}{13}{section*.24}
