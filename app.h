@@ -41,16 +41,19 @@ class app{
 		// Asks the user for a number 
 		T getNumber(bool p_positiveDefinite, string p_msg);
 
+		// Asks the user for a fileName
+		string getFilename();
+
 		// Takes a list of characters and asks the user to input one. The function keeps asking
 		// until a listed character is given, this is then returned. The function displays the
 		// message msg.
     template <class U> char getOption(initializer_list<U> p_chars, string p_msg);
 	public:
 		// Default constructor
-    app() : m_fileName("defaultVisualisation"), m_using(false){};
+    app() : m_using(false){};
 
 		// Parametrised constructor
-		app(manager<T> p_man, string p_fileName) : m_man(p_man), m_fileName(p_fileName), m_using(false) {};
+		app(manager<T> p_man) : m_man(p_man), m_using(false) {};
 
 	// Destructor
 		~app(){};
@@ -87,7 +90,7 @@ template <class T> void app<T>::start(){
 
 template <class T> void app<T>::loop(){
 	char ans1, ans2, ans3;
-	T X, Y, L1, L2;
+	T X, Y, Z, L1, L2, theta, X2, Y2, Z2;
 	string name;
 
 	ans1 = this->getOption({'l', 'a', 'm', 'r', 'd', 'q'}, ""
@@ -179,12 +182,130 @@ template <class T> void app<T>::loop(){
 			break;
 		case 'm':
 			// Modify an existing polygon
+			if (m_man.N() == 0){
+				cout << "There are no polygons to modify!" << endl;
+			}
+			else{
+				name = this->getExistingName();
+				ans2 = this->getOption({'t', 'r', 's'}, ""
+															 "What do you want to do to the polygon?   \n"
+				                       "  [t] Translate it                       \n"
+				                       "  [r] Rotate it                          \n"
+				                       "  [s] Scale it                           \n");
+				switch (ans2){
+					case 't':
+						// Translate it
+						X = this->getNumber(false, "Please enter the translate in x:");
+						Y = this->getNumber(false, "Please enter the translate in y:");
+						Z = this->getNumber(false, "Please enter the translate in z:");
+						m_man.get(name)->translate(X, Y, Z);
+						break;
+					case 'r':
+						// Rotate it
+						ans3 = this->getOption({'n', 'x', 'y', 'z', 'a'}, ""
+						    									 "How do you wish to rotate it?            \n"
+				                           "  [n] About the normal from its centre   \n"
+				                           "  [x] About the x-axis                   \n"
+				                           "  [y] About the y-axis                   \n"
+				                           "  [z] About the z-axis                   \n"
+				                           "  [a] About an arbitrary axis            \n");
+						switch (ans3){
+							case 'n':
+								// Normal axis through centre
+								theta = this->getNumber(false, "Please enter the angle you wish to rotate through (deg):");
+								theta *= PI/180;
+								m_man.get(name)->rotateCentre(theta);
+								break;
+							case 'x':
+								// x-axis
+								theta = this->getNumber(false, "Please enter the angle you wish to rotate through (deg):");
+								theta *= PI/180;
+								m_man.get(name)->rotate(0, 0, 0, 1, 0, 0, theta);
+								break;
+							case 'y':
+								// y-axis
+								theta = this->getNumber(false, "Please enter the angle you wish to rotate through (deg):");
+								theta *= PI/180;
+								m_man.get(name)->rotate(0, 0, 0, 0, 1, 0, theta);
+								break;
+							case 'z':
+								// z-axis
+								theta = this->getNumber(false, "Please enter the angle you wish to rotate through (deg):");
+								theta *= PI/180;
+								m_man.get(name)->rotate(0, 0, 0, 0, 0, 1, theta);
+								break;
+							case 'a':
+								// aribtrary axis
+								X  = this->getNumber(false, "Please enter the x-position of the origin of rotation:");
+								Y  = this->getNumber(false, "Please enter the y-position of the origin of rotation:");
+								Z  = this->getNumber(false, "Please enter the z-position of the origin of rotation:");
+								X2 = this->getNumber(false, "Please enter the x-position of another point along the rotation axis:");
+								Y2 = this->getNumber(false, "Please enter the y-position of another point along the rotation axis:");
+								Z2 = this->getNumber(false, "Please enter the z-position of another point along the rotation axis:");
+								theta = this->getNumber(false, "Please enter the angle you wish to rotate through (deg):");
+								theta *= PI/180;
+								m_man.get(name)->rotate(X, Y, Z, X2, Y2, Z2, theta);
+								break;
+						}
+						break;
+					case 's':
+						// Scale it
+						ans3 = this->getOption({'n', 'o'}, ""
+						    									 "How do you wish to scale it?             \n"
+				                           "  [n] About its centre                   \n"
+				                           "  [o] About the origin                   \n");
+						switch (ans3){
+							case 'n':
+								// About its centre
+								break;
+							case 'o':
+								// About the origin
+								break;
+						}
+						break;
+				}
+			}
+				
 			break;
 		case 'r':
 			// Remove an existing polygon
+			name = this->getExistingName();		
+			ans2 = this->getOption({'y', 'n'}, ""
+			                       "Do you wish remove this polygon to the scene? \n"
+														 "  [y] Yes, remove it forever                  \n"
+			                       "  [n] No, I want to keep it                   \n");
+			if (ans2 == 'y'){
+				m_man.remove(name);
+				cout << "Polygon \"" << name << "\" has been removed" << endl;
+			}
+
 			break;
 		case 'd':
 			// Display the current scene
+			
+			// Check to see if the scence has been named yet
+			if (m_fileName.length() == 0){
+				cout << "Before you can display the scene you must name it!" << endl;
+				m_fileName = this->getFilename();
+			}
+			else{
+				cout << "The scene is currently named \"" << m_fileName << "\"." << endl;
+				ans2 = this->getOption({'y', 'n'}, ""
+			                       "Do you wish change this name? \n"
+														 "  [y] Yes, I want to display with a new name   \n"
+			                       "  [n] No, I want to update the current display \n");
+				if (ans2 == 'y'){
+					m_fileName = this->getFilename();
+				}
+			}
+			cout << endl;
+			if (m_man.N() != 0){
+				m_man.display(m_fileName);
+			}
+			else{
+				cout << "There are no polygons to display!" << endl;
+			}
+
 			break;
 		case 'q':
 			// Quit the application
@@ -215,85 +336,125 @@ template <class T> void app<T>::end(){
 
 template <class T> string app<T>::getNewName(){
 	string nam;
+	bool good;
 
 	cout << "Please enter a unique name for this polygon" << endl;
 	cout << "  name = ";
-	getline(cin, nam);
 
-	while (m_man.exists(nam)){
+	cin.clear();
+	good = (cin >> nam);
+
+	while (!good || m_man.exists(nam)){
 		cout << endl;
 		cout << "  Sorry that name is taken. The list of current names is" << endl;
 		m_man.listAll();
 		cout << "  name = ";
-		getline(cin, nam);
+		cin.clear();
+		good = (cin >> nam);
+		cin.ignore(100000, '\n');
 	}
+	cin.ignore(100000, '\n');
 	cout << endl;
 	return nam;
 }
 
 template <class T> string app<T>::getExistingName(){
 	string nam;
+	bool good;
 
 	cout << "Please enter an existing polygon name" << endl;
 	cout << "  name = ";
-	getline(cin, nam);
+	cin.clear();
+	good = (cin >> nam);
 
-	while (!m_man.exists(nam)){
+	while (!good || !m_man.exists(nam)){
 		cout << endl;
 		cout << "  Sorry that does not currently exits. The list of current names is" << endl;
 		m_man.listAll();
 		cout << "  name = ";
-		getline(cin, nam);
+		cin.clear();
+		cin.ignore(100000, '\n');
+		good = (cin >> nam);
 	}
+	cin.ignore(100000, '\n');
 	cout << endl;
 
 	return nam;
 }
 
 template <class T> T app<T>::getNumber(bool p_positiveDefinite, string p_msg){
-	string input;
-	stringstream ss;
 	T num;
 
 	cout << p_msg << endl;
 	cout << "  value = ";
-	getline(cin, input);
-	ss << input;
-	ss >> num;
-	ss.clear();	
+	
+	T minVal;
 
 	if (p_positiveDefinite){
-		while (num <= 0){
-			cout << endl;
-			cout << "  Sorry you must enter a number >= 0" << endl;
-			cout << "  value = ";
-			getline(cin, input);
-			ss << input;
-			ss >> num;
-			ss.clear();	
-		}
+		minVal = 0;
 	}
+	else{
+		minVal = -9999999999;
+	}
+
+	bool good;
+	
+	good = (cin >> num);
+	while (!good || num <= minVal){
+		cin.clear();
+		cin.ignore(10000, '\n');	
+	
+		cout << endl;
+		if (p_positiveDefinite){
+			cout << "  Sorry you must enter a number >= 0" << endl;
+		}
+		else{
+			cout << "  Sorry you must enter a number" << endl;
+		}
+		cout << "  value = ";
+		good = (cin >> num);
+	}
+
+	cin.ignore(100000, '\n');
+
 	cout << endl;
 
 	return num;
 }
 
+template <class T> string app<T>::getFilename(){
+	string nam;
+
+	cout << "Please name the scene" << endl;
+	cout << "  name = ";
+
+	cin >> nam;
+	cin.ignore(100000, '\n');
+
+	cin.clear();
+
+	return nam;
+}
+
 template <class T> template <class U> char app<T>::getOption(initializer_list<U> p_chars, string p_msg){
 	vector<char> charList(p_chars);
 	char ans;
-	string input;
+	bool good;
 	stringstream ss;
+	string input;
+	bool validAns{false};
 
 	cout << p_msg << endl;
 	cout << "  response = ";
-	getline(cin, input);
-	ss << input.substr(0, 1);
-	ss >> ans;	
-	ss.clear();
- 
-	bool validAns{false};
 
-	while (!validAns){
+	cin.clear();
+	ss.clear();
+	ss.str("");
+	getline(cin, input);
+	ss << input.substr(0,1);
+	good = (ss >> ans);
+
+	while (!validAns || !good){
 		for (char aChar : charList){
 			if (aChar == ans){
 				validAns = true;
@@ -307,13 +468,17 @@ template <class T> template <class U> char app<T>::getOption(initializer_list<U>
 			}
 			cout << endl << endl;
 			cout << "  response = ";
-			getline(cin, input);
-			ss << input.substr(0, 1);
-			ss >> ans;	
+
+			cin.clear();
 			ss.clear();
+			ss.str("");
+			getline(cin, input);
+			ss << input.substr(0,1);
+			good = (ss >> ans);
 		}
 	}
 	cout << endl;
+	cin.clear();
 
 	return ans;
 }

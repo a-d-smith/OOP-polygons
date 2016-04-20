@@ -43,6 +43,9 @@ class manager{
 
     // Function to write a .htm file which displays the polygons.
     void display(string p_filename);
+
+		// Function to return how many polygons have been created
+		int N();
 };
 
 // Functions to add / remove / get polygons in the library
@@ -141,6 +144,7 @@ template <class T> void manager<T>::display(string p_filename){
   oFile << "</head>"                                                       << endl;
   oFile << "<body>"                                                        << endl;
   oFile << "  <h1>Polygon Visualisation</h1>"                              << endl; 
+  oFile << "  <h2>" << p_filename << "</h2>"                               << endl; 
   oFile << "  <canvas id='canv' width='" << W << "' height='" << H << "'>" << endl;
   oFile << "    Sorry your browser doesn't support the HTML5 canvas"       << endl;
   oFile << "  </canvas>"                                                   << endl;
@@ -518,6 +522,13 @@ template <class T> void manager<T>::display(string p_filename){
 
   // Close the file
   oFile.close();
+
+	cout << "The file " << p_filename << ".htm has been created!" << endl;
+}
+
+// Function to return how many polygons have been created
+template <class T> int manager<T>::N(){
+	return m_library.size();
 }
 
 }

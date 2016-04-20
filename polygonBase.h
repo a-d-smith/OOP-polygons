@@ -100,7 +100,7 @@ template <class T> polygon<T>::polygon(int p_N, T p_x, T p_y, T p_L){
   T R = p_L / (2 * sin(PI / double(p_N)));
 
 	for (int i{0}; i < p_N; i++){
-		vertex<T> newVtx(p_x + R*cos((i*2 - 1)*PI/double(p_N)), p_y + R*sin((i*2 - 1)*PI/double(p_N)), 0);
+		vertex<T> newVtx(p_x + R*cos(PI/2 + (i*2 - 1)*PI/double(p_N)), p_y + R*sin(PI/2 + (i*2 - 1)*PI/double(p_N)), 0);
 		m_vertices.push_back(newVtx);
 	}
 }
