@@ -1,6 +1,7 @@
 #include <iostream>
-#include "manager.h"
 #include "polygon.h"
+#include "manager.h"
+#include "app.h"
 
 using namespace std;
 using namespace polygons;
@@ -34,11 +35,11 @@ int main(){
   m.add(new rectangle<double>(0, 0, 7, 5), "roofBase");
 	m.get("roofBase")->translate(0, 0, 4);
 
-	m.add(new isoTriangle<double>(0, 0, 5), "roofSide");
+	m.add(new equiTriangle<double>(0, 0, 5), "roofSide");
 	m.get("roofSide")->rotate(0,0,0, 0,1,0, PI/2);
 	m.get("roofSide")->translate(3.5, 0, 4 + pow(2, 0.5));
 
-	m.add(new isoTriangle<double>(0, 0, 5), "roofSide2");
+	m.add(new equiTriangle<double>(0, 0, 5), "roofSide2");
 	m.get("roofSide2")->rotate(0,0,0, 0,1,0, PI/2);
 	m.get("roofSide2")->translate(-3.5, 0, 4 + pow(2, 0.5));
 
@@ -50,10 +51,10 @@ int main(){
 	m.get("roofTop2")->translate(0, 0, 4);
 	m.get("roofTop2")->rotate(0, +2.5, 4, 1, +2.5, 4, -PI/3);
 
-  m.display("testDisplay");
-
-
-	// REMEMBER ISOTRIANGLE DEFINITION IS WRONG, YOU HAVE DONE EQUILATERAL DUMBASSS
+  m.display("houseDisplay");
+	m.listAll();
+	
+	app<double> a;
 
   return 0;
 }

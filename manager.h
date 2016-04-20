@@ -98,7 +98,7 @@ template <class T> void manager<T>::listAll(){
     cout << setw(44) << "Name"       << " | ";
     cout << setw(6)  << "Sides"      << " | ";
     cout << setw(20) << "Type"       << " | ";
-    cout << setw(10) << "Modified?"  << endl;
+    cout << setw(10) << "Re-scaled?" << endl;
     cout << "-----------------------------------------------------------------------------------------" << endl;
 
     // Loop over all of the polygons
