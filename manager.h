@@ -91,25 +91,26 @@ template <class T> void manager<T>::remove(string p_name){
 // A function to list all polygons.
 template <class T> void manager<T>::listAll(){
   if (m_library.size() == 0){
-    cout << "No polygons have been created" << endl;  
+    cout << "No polygons have been created" << endl << endl;  
   }
   else{
     // Output the top row of the table
-    cout << setw(44) << "Name"       << " | ";
+    cout << setw(25) << "Name"       << " | ";
     cout << setw(6)  << "Sides"      << " | ";
     cout << setw(20) << "Type"       << " | ";
     cout << setw(10) << "Re-scaled?" << endl;
-    cout << "-----------------------------------------------------------------------------------------" << endl;
+		cout << "----------------------------------------------------------------------"  << endl;
 
     // Loop over all of the polygons
     typename map<string, polygon<T>*>::iterator it;
     for (it = m_library.begin(); it != m_library.end(); it++){
       // Output the name of the polygon
-      cout << setw(44) << it->first          << " | ";
+      cout << setw(25) << it->first          << " | ";
       cout << setw(6)  << it->second->N()    << " | ";
       cout << setw(20) << it->second->type() << " | ";
       cout << setw(10) << it->second->modified() << endl;
     }
+		cout << endl;
   }
 }
 

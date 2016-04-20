@@ -171,10 +171,13 @@ template <class T> bool polygon<T>::modified(){
 
 // Function to list the vertices in the polygon
 template <class T> void polygon<T>::listVertices(){
-	cout << "Type : " << this->type() << endl;
+	cout << "  Type   = " << this->type() << endl;
+	int i = 1;
 	for (vertex<T> &vtx : m_vertices){
-		cout << "   " << vtx << endl;
+		cout << "     (" << i << ")  " << vtx << endl;
+		i++;
 	}
+	cout << endl;
 }
 
 // Function to access (read only) the vertices

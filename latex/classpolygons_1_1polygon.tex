@@ -1,0 +1,68 @@
+\hypertarget{classpolygons_1_1polygon}{\section{polygons\-:\-:polygon$<$ T $>$ Class Template Reference}
+\label{classpolygons_1_1polygon}\index{polygons\-::polygon$<$ T $>$@{polygons\-::polygon$<$ T $>$}}
+}
+Inheritance diagram for polygons\-:\-:polygon$<$ T $>$\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.372881cm]{classpolygons_1_1polygon}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classpolygons_1_1polygon_a15af5594d92579ffd4ae2fb51edc3de7}{{\bfseries polygon} (int p\-\_\-\-N, T p\-\_\-x, T p\-\_\-y, T p\-\_\-\-L)}\label{classpolygons_1_1polygon_a15af5594d92579ffd4ae2fb51edc3de7}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a93e192db67d4b8a841066c09838d377a}{{\footnotesize template$<$class U $>$ }\\{\bfseries polygon} (initializer\-\_\-list$<$ U $>$ li)}\label{classpolygons_1_1polygon_a93e192db67d4b8a841066c09838d377a}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a89546d086da3c7b779f3cfac3e17ca47}{int {\bfseries N} ()}\label{classpolygons_1_1polygon_a89546d086da3c7b779f3cfac3e17ca47}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_afac16ab826161151ec6c72d76b30963d}{\hyperlink{classpolygons_1_1vertex}{vertex}$<$ T $>$ {\bfseries centre} ()}\label{classpolygons_1_1polygon_afac16ab826161151ec6c72d76b30963d}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a25500df92a688cf99f061bbef709ad14}{\hyperlink{classpolygons_1_1vertex}{vertex}$<$ T $>$ {\bfseries normal} ()}\label{classpolygons_1_1polygon_a25500df92a688cf99f061bbef709ad14}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_af26febef898801a19a9d6ddbbde4e4cf}{bool {\bfseries modified} ()}\label{classpolygons_1_1polygon_af26febef898801a19a9d6ddbbde4e4cf}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a3291384abefa6279f035f412f9d0dec3}{virtual string {\bfseries type} ()=0}\label{classpolygons_1_1polygon_a3291384abefa6279f035f412f9d0dec3}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_aef5db913d4250fbda4cc40184858c4c1}{void {\bfseries list\-Vertices} ()}\label{classpolygons_1_1polygon_aef5db913d4250fbda4cc40184858c4c1}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a513f206b17fd9a8409e07b4c4a93ce51}{const \hyperlink{classpolygons_1_1vertex}{vertex}$<$ T $>$ \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int p\-\_\-i)}\label{classpolygons_1_1polygon_a513f206b17fd9a8409e07b4c4a93ce51}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a58b903988793c71055bc2177872164d3}{void {\bfseries translate} (T p\-\_\-x, T p\-\_\-y, T p\-\_\-z)}\label{classpolygons_1_1polygon_a58b903988793c71055bc2177872164d3}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_aac0acb96427b60ed992c4d018e972cd5}{void {\bfseries scale} (T p\-\_\-x, T p\-\_\-y, T p\-\_\-z, T p\-\_\-fx, T p\-\_\-fy, T p\-\_\-fz)}\label{classpolygons_1_1polygon_aac0acb96427b60ed992c4d018e972cd5}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a7c9f38badf1fbbbdf3cc8529e039b395}{void {\bfseries scale\-Centre} (T p\-\_\-fx, T p\-\_\-fy, T p\-\_\-fz)}\label{classpolygons_1_1polygon_a7c9f38badf1fbbbdf3cc8529e039b395}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a14a41d7b439f852007a1d82eff7bdb50}{void {\bfseries rotate} (T p\-\_\-x1, T p\-\_\-y1, T p\-\_\-z1, T p\-\_\-x2, T p\-\_\-y2, T p\-\_\-z2, T p\-\_\-theta)}\label{classpolygons_1_1polygon_a14a41d7b439f852007a1d82eff7bdb50}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_ac9f4a5413a9ccc98ac7788f9b92f01ab}{void {\bfseries rotate\-Centre} (T p\-\_\-theta)}\label{classpolygons_1_1polygon_ac9f4a5413a9ccc98ac7788f9b92f01ab}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classpolygons_1_1polygon_a98f0e2c1c2a6b06f67b4211fe21127ed}{vector$<$ \hyperlink{classpolygons_1_1vertex}{vertex}$<$ T $>$ $>$ {\bfseries m\-\_\-vertices}}\label{classpolygons_1_1polygon_a98f0e2c1c2a6b06f67b4211fe21127ed}
+
+\item 
+\hypertarget{classpolygons_1_1polygon_a8bb0a52bc538b433819883316a507d92}{bool {\bfseries m\-\_\-modified} \{false\}}\label{classpolygons_1_1polygon_a8bb0a52bc538b433819883316a507d92}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+polygon\-Base.\-h\end{DoxyCompactItemize}

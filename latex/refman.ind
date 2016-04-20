@@ -1,0 +1,23 @@
+\begin{theindex}
+
+  \item {polygons\discretionary {-}{}{}::app$<$ T $>$}, \hyperpage{7}
+  \item {polygons\discretionary {-}{}{}::equi\discretionary {-}{}{}Triangle$<$ T $>$}, 
+		\hyperpage{8}
+  \item {polygons\discretionary {-}{}{}::hexagon$<$ T $>$}, 
+		\hyperpage{8}
+  \item {polygons\discretionary {-}{}{}::iso\discretionary {-}{}{}Triangle$<$ T $>$}, 
+		\hyperpage{8}
+  \item {polygons\discretionary {-}{}{}::manager$<$ T $>$}, 
+		\hyperpage{9}
+  \item {polygons\discretionary {-}{}{}::pentagon$<$ T $>$}, 
+		\hyperpage{9}
+  \item {polygons\discretionary {-}{}{}::polygon$<$ T $>$}, 
+		\hyperpage{10}
+  \item {polygons\discretionary {-}{}{}::rectangle$<$ T $>$}, 
+		\hyperpage{11}
+  \item {polygons\discretionary {-}{}{}::square$<$ T $>$}, 
+		\hyperpage{11}
+  \item {polygons\discretionary {-}{}{}::vertex$<$ T $>$}, 
+		\hyperpage{12}
+
+\end{theindex}

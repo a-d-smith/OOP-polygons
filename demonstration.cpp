@@ -52,9 +52,9 @@ int main(){
 	m.get("roofTop2")->rotate(0, +2.5, 4, 1, +2.5, 4, -PI/3);
 
   m.display("houseDisplay");
-	m.listAll();
 	
 	app<double> a;
+	a.start();
 
   return 0;
 }
